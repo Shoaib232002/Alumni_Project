@@ -9,7 +9,8 @@ import {
   BanknoteIcon, 
   LogOutIcon,
   MenuIcon,
-  XIcon
+  XIcon,
+  SearchIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useApi } from '@/contexts/ApiContext';
@@ -113,6 +114,10 @@ export function AdminLayout() {
             <Link to="/admin/fundraising" className="flex items-center p-3 text-gray-700 rounded-md hover:bg-gray-100">
               <BanknoteIcon className="mr-3 h-5 w-5" />
               Fundraising
+            </Link>
+            <Link to="/admin/scraper" className="flex items-center p-3 text-gray-700 rounded-md hover:bg-gray-100">
+              <SearchIcon className="mr-3 h-5 w-5" />
+              Alumni Scraper
             </Link>
           </nav>
           

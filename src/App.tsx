@@ -19,6 +19,7 @@ import FundraisingPage from './pages/FundraisingPage';
 import FundraisingDetailPage from './pages/FundraisingDetailPage';
 import DonationPage from './pages/DonationPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import NotFound from './pages/NotFound';
 
 // Admin Pages
@@ -26,6 +27,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminAlumniPage from './pages/admin/AdminAlumniPage';
 import AdminFeedbackPage from './pages/admin/AdminFeedbackPage';
 import AdminFundraisingPage from './pages/admin/AdminFundraisingPage';
+import ScraperPage from './pages/admin/ScraperPage';
 
 // Private Routes Component
 import PrivateRoute from './components/PrivateRoute';
@@ -52,8 +54,9 @@ const App = () => (
                 <Route path="fundraising/:id/donate" element={<DonationPage />} />
               </Route>
               
-              {/* Login Page */}
+              {/* Auth Pages */}
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               
               {/* Admin Routes with AdminLayout (Protected) */}
               <Route 
@@ -68,6 +71,7 @@ const App = () => (
                 <Route path="alumni" element={<AdminAlumniPage />} />
                 <Route path="feedback" element={<AdminFeedbackPage />} />
                 <Route path="fundraising" element={<AdminFundraisingPage />} />
+                <Route path="scraper" element={<ScraperPage />} />
               </Route>
               
               {/* 404 Not Found */}

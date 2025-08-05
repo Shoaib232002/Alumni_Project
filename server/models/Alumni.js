@@ -48,6 +48,7 @@ const alumniSchema = new mongoose.Schema({
   },
   socialLinks: {
     linkedin: { type: String, trim: true },
+    naukri: { type: String, trim: true },
     twitter: { type: String, trim: true },
     facebook: { type: String, trim: true },
     instagram: { type: String, trim: true },

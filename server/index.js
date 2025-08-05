@@ -10,6 +10,7 @@ import donationRoutes from './routes/donation.js';
 import authRoutes from './routes/auth.js';
 import notificationRoutes from './routes/notification.js';
 import collegeInfoRoutes from './routes/collegeInfo.js';
+import scraperRoutes from './routes/scraper.js';
 
 // Import MongoDB connection
 import mongoose, { connectToDatabase, createInitialData } from './database/mongodb.js';
@@ -57,6 +58,7 @@ app.use('/api/donation', donationRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/notification', notificationRoutes);
 app.use('/api/college-info', collegeInfoRoutes);
+app.use('/api/scraper', scraperRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

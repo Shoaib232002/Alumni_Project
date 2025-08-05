@@ -26,6 +26,9 @@ interface AlumniCardProps {
 }
 
 export function AlumniCard({ alumni, isCompact = false }: AlumniCardProps) {
+  // Add console log to debug the alumni data
+  console.log('Alumni in card:', alumni);
+  
   if (isCompact) {
     return (
       <Card className="overflow-hidden">
@@ -45,7 +48,7 @@ export function AlumniCard({ alumni, isCompact = false }: AlumniCardProps) {
               {alumni.currentCompany && (
                 <span className="flex items-center mt-1">
                   <Building className="h-3 w-3 mr-1" />
-                  {alumni.designation} at {alumni.currentCompany}
+                  {alumni.designation || 'Employee'} at {alumni.currentCompany}
                 </span>
               )}
             </CardDescription>
@@ -69,7 +72,7 @@ export function AlumniCard({ alumni, isCompact = false }: AlumniCardProps) {
           />
           <div>
             <CardTitle>{alumni.name}</CardTitle>
-            <CardDescription>{alumni.degree}</CardDescription>
+            <CardDescription>{alumni.degree || 'Graduate'}</CardDescription>
             <Badge variant="outline" className="mt-1">{alumni.batch} Batch</Badge>
           </div>
         </div>
@@ -78,7 +81,7 @@ export function AlumniCard({ alumni, isCompact = false }: AlumniCardProps) {
         {alumni.currentCompany && (
           <div className="flex items-center">
             <Briefcase className="h-4 w-4 mr-2 text-gray-400" />
-            <span>{alumni.designation} at {alumni.currentCompany}</span>
+            <span>{alumni.designation || 'Employee'} at {alumni.currentCompany}</span>
           </div>
         )}
         <div className="flex items-center">

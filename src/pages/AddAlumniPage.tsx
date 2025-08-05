@@ -70,6 +70,8 @@ export default function AddAlumniPage() {
     "M.Com",
     "B.Sc",
     "M.Sc",
+    "BCA",
+    "MCA",
     "Ph.D"
   ];
 

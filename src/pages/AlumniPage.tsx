@@ -58,14 +58,47 @@ export default function AlumniPage() {
     const fetchAlumni = async () => {
       try {
         const alumniList = await getAlumniList();
-        setAlumni(alumniList);
+        console.log('Fetched alumni:', alumniList);
+        
+        if (!alumniList || !Array.isArray(alumniList)) {
+          console.error("Invalid alumni data received:", alumniList);
+          return;
+        }
+        
+        // Transform backend data to match frontend Alumni type
+        const transformedAlumni = alumniList.map(a => {
+          // Ensure we have a valid alumni object
+          if (!a) return null;
+          
+          return {
+            id: (a as any)._id || a.id || '',
+            name: a.name || 'Unknown',
+            email: a.email || '',
+            phone: a.phone || '',
+            batch: a.batch ? a.batch.toString() : '',
+            degree: a.degree || 'Graduate',
+            currentCompany: (a as any).company || 'Company',
+            designation: (a as any).occupation || 'Employee',
+            linkedInProfile: (a as any).socialLinks?.linkedin || '',
+            naukriProfile: (a as any).socialLinks?.naukri || '',
+            otherProfiles: (a as any).socialLinks || {},
+            bio: a.bio || '',
+            image: a.image || '',
+            isVerified: Boolean(a.isVerified),
+            createdAt: a.createdAt || new Date().toISOString(),
+            updatedAt: a.updatedAt || new Date().toISOString()
+          };
+        }).filter(Boolean); // Remove any null entries
+        
+        console.log('Transformed alumni:', transformedAlumni);
+        setAlumni(transformedAlumni);
         
         // Extract unique batches, degrees and companies
-        const uniqueBatches = [...new Set(alumniList.map(a => a.batch))].sort().reverse();
-        const uniqueDegrees = [...new Set(alumniList.map(a => a.degree))].sort();
+        const uniqueBatches = [...new Set(transformedAlumni.map(a => a.batch).filter(Boolean))].sort().reverse();
+        const uniqueDegrees = [...new Set(transformedAlumni.map(a => a.degree).filter(Boolean))].sort();
         const uniqueCompanies = [...new Set(
-          alumniList
-            .filter(a => a.currentCompany)
+          transformedAlumni
+            .filter(a => a.currentCompany && typeof a.currentCompany === 'string')
             .map(a => a.currentCompany as string)
         )].sort();
         
@@ -74,7 +107,7 @@ export default function AlumniPage() {
         setCompanies(uniqueCompanies);
         
         // Apply initial filtering if there's a batch in URL
-        filterAlumni(alumniList, searchTerm, selectedBatch, selectedDegree, selectedCompany);
+        filterAlumni(transformedAlumni, searchTerm, selectedBatch, selectedDegree, selectedCompany);
       } catch (error) {
         console.error("Error fetching alumni:", error);
       }
@@ -90,15 +123,23 @@ export default function AlumniPage() {
     degree: string, 
     company: string
   ) => {
+    // Ensure we have a valid alumni list
+    if (!alumniList || !Array.isArray(alumniList)) {
+      console.error('Invalid alumni list for filtering:', alumniList);
+      setFilteredAlumni([]);
+      return;
+    }
+    
     let filtered = [...alumniList];
     
     // Filter by search term
     if (search) {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter(a => 
-        a.name.toLowerCase().includes(searchLower) || 
-        a.email.toLowerCase().includes(searchLower) ||
-        (a.designation && a.designation.toLowerCase().includes(searchLower))
+        (a.name && a.name.toLowerCase().includes(searchLower)) || 
+        (a.email && a.email.toLowerCase().includes(searchLower)) ||
+        (a.designation && a.designation.toLowerCase().includes(searchLower)) ||
+        (a.currentCompany && typeof a.currentCompany === 'string' && a.currentCompany.toLowerCase().includes(searchLower))
       );
     }
     
@@ -114,9 +155,12 @@ export default function AlumniPage() {
     
     // Filter by company
     if (company) {
-      filtered = filtered.filter(a => a.currentCompany === company);
+      filtered = filtered.filter(a => 
+        a.currentCompany && typeof a.currentCompany === 'string' && a.currentCompany === company
+      );
     }
     
+    console.log('Filtered alumni:', filtered.length);
     setFilteredAlumni(filtered);
   };
 
